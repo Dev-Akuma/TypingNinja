@@ -1,13 +1,20 @@
 // src/SoundManager.js
-
 class SoundManager {
     constructor() {
         this.ctx = new (window.AudioContext || window.webkitAudioContext)();
         this.enabled = true;
     }
 
+    resume() {
+        if (this.ctx.state === 'suspended') {
+            this.ctx.resume();
+        }
+    }
+
     playTone(freq, type, duration, vol = 0.1) {
-        if (!this.enabled || this.ctx.state === 'suspended') return;
+        if (!this.enabled) return;
+        // Auto-resume if needed (though best done in startGame)
+        if (this.ctx.state === 'suspended') this.ctx.resume();
         
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
@@ -15,7 +22,6 @@ class SoundManager {
         osc.type = type;
         osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
         
-        // Envelope: Start at volume, fade to 0.01 fast
         gain.gain.setValueAtTime(vol, this.ctx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + duration);
 
@@ -26,19 +32,13 @@ class SoundManager {
         osc.stop(this.ctx.currentTime + duration);
     }
 
-    playClick() {
-        // CHANGED: Lower frequency, Sine wave, very short duration
-        // This mimics a mechanical switch "bottoming out"
-        this.playTone(600, 'sine', 0.05, 0.15); 
-    }
-
-    playError() {
-        this.playTone(150, 'sawtooth', 0.2, 0.1);
-    }
+    playClick() { this.playTone(600, 'sine', 0.05, 0.15); }
+    playError() { this.playTone(150, 'sawtooth', 0.2, 0.1); }
 
     playSlash() {
-        if (!this.enabled || this.ctx.state === 'suspended') return;
-        // White noise "Whoosh" (unchanged)
+        if (!this.enabled) return;
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+
         const bufferSize = this.ctx.sampleRate * 0.1;
         const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
         const data = buffer.getChannelData(0);
@@ -47,9 +47,8 @@ class SoundManager {
         const noise = this.ctx.createBufferSource();
         noise.buffer = buffer;
         const gain = this.ctx.createGain();
-        
-        // Lowpass filter to make it sound "airy" not "static-y"
         const filter = this.ctx.createBiquadFilter();
+        
         filter.type = 'lowpass';
         filter.frequency.value = 1000;
 
