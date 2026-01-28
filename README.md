@@ -1,12 +1,12 @@
-# 🥷 TypeNinja
+# 🥷 TypingNinja
 
 > A high-octane, aesthetic typing survival game built with React, HTML5 Canvas, and the Web Audio API.
 
-[](TypingNinja/Screenshot_2026-01-24_23-16-06.png)
+![Image](/Screenshot_2026-01-24_23-16-06.png)
 
 ## 📖 Overview
 
-**TypeNinja** is a web-based arcade game inspired by *Fruit Ninja*, but played with your keyboard. Words are thrown into the air, and players must type them correctly to "slice" them before they hit the ground.
+**TypingNinja** is a web-based arcade game inspired by *Fruit Ninja*, but played with your keyboard. Words are thrown into the air, and players must type them correctly to "slice" them before they hit the ground.
 
 This project was built as a technical case study to demonstrate **hybrid rendering strategies** in React—using standard DOM for UI overlays and the HTML5 Canvas API for high-performance, 60FPS physics and particle rendering.
 
