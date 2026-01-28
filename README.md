@@ -2,7 +2,7 @@
 
 > A high-octane, aesthetic typing survival game built with React, HTML5 Canvas, and the Web Audio API.
 
-![TypeNinja Banner](TypingNinja/Screenshot_2026-01-24_23-16-06.png)
+(Screenshot_2026-01-24_23-16-06.png)
 
 ## 📖 Overview
 
